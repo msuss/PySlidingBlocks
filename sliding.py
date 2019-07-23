@@ -8,6 +8,21 @@ RIGHT = (0, 1)
 UP = (-1, 0)
 DOWN = (1, 0)
 
+board1 = [[0 , 0, 0, 0, A ,0], \
+		  [X , 0, 0, 0, 0 ,0], \
+		  [P , B, 0, 0, 0 ,0], \
+		  [X , 0, 0, 0, X ,0], \
+		  [0 , 0, 0, 0, 0 ,0]]
+
+board2 = [[0 , 0, 0, X, 0 ,0], \
+		  [X , 0, 0, X, B ,A], \
+		  [P , B, 0, 0, 0 ,0], \
+		  [X , 0, 0, 0, X ,X], \
+		  [0 , 0, 0, 0, 0 ,0]]
+
+
+boards = [board1, board2]
+
 class Puzzle:
 
 	def __init__(self, board):
@@ -70,14 +85,7 @@ class Puzzle:
 
 print
 
-puzzle1 = [[0 , 0, 0, A ,0], \
-		  [X , 0, 0, 0 ,0], \
-		  [P , B, 0, 0 ,0], \
-		  [X , 0, 0, X ,0], \
-		  [0 , 0, 0, 0 ,0]]
 
-p1 = Puzzle(puzzle1)
-p1.prettyPrint()
 
 # # push block to the right
 # p1.movePlayer(RIGHT)
@@ -91,24 +99,31 @@ p1.prettyPrint()
 # p1.movePlayer(UP)
 # p1.prettyPrint()
 
+boardNum = raw_input()
+
+board = boards[int(boardNum)]
+
+puzzle = Puzzle(board)
+puzzle.prettyPrint()
+
 finished = False
 
 while not finished:
 	direction = None
 	inp = raw_input()
-	if inp == 'A':
+	if inp == 'a':
 		direction = LEFT
-	elif inp == 'D':
+	elif inp == 'd':
 		direction = RIGHT
-	elif inp == 'S':
+	elif inp == 's':
 		direction = DOWN
-	elif inp == 'W':
+	elif inp == 'w':
 		direction = UP
-	elif inp == 'Q':
+	elif inp == 'q':
 		finished = True
 	
 	if direction:
-		finished = p1.movePlayer(direction)
-		p1.prettyPrint()
+		finished = puzzle.movePlayer(direction)
+		puzzle.prettyPrint()
 
 
