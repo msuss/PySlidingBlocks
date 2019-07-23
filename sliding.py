@@ -3,10 +3,10 @@ A = 4
 B = 2
 P = 1
 
-DIR_LEFT = (0, -1)
-DIR_RIGHT = (0, 1)
-DIR_UP = (-1, 0)
-DIR_DOWN = (1, 0)
+LEFT = (0, -1)
+RIGHT = (0, 1)
+UP = (-1, 0)
+DOWN = (1, 0)
 
 class Puzzle:
 
@@ -56,6 +56,7 @@ class Puzzle:
 			self.board[origPosition[0]][origPosition[1]] = 0
 		if (isPlayer):
 			self.playerPosition = currentCell
+		return False
 
 
 	def movePlayer(self, direction):
@@ -63,9 +64,9 @@ class Puzzle:
 	 	if self.outOfBounds(adjCell):
 	 		return
 	 	elif self.board[adjCell[0]][adjCell[1]] == B:
-	 	 	self.moveObject(adjCell, direction)
+	 	 	return self.moveObject(adjCell, direction)
 	 	else:
-	 		self.moveObject(self.playerPosition, direction, True)
+	 		return self.moveObject(self.playerPosition, direction, True)
 
 print
 
@@ -78,17 +79,36 @@ puzzle1 = [[0 , 0, 0, A ,0], \
 p1 = Puzzle(puzzle1)
 p1.prettyPrint()
 
-# push block to the right
-p1.movePlayer(DIR_RIGHT)
-p1.prettyPrint()
+# # push block to the right
+# p1.movePlayer(RIGHT)
+# p1.prettyPrint()
 
-#move player to the right
-p1.movePlayer(DIR_RIGHT)
-p1.prettyPrint()
+# #move player to the right
+# p1.movePlayer(RIGHT)
+# p1.prettyPrint()
 
-#move player up to the goal
-p1.movePlayer(DIR_UP)
-p1.prettyPrint()
+# #move player up to the goal
+# p1.movePlayer(UP)
+# p1.prettyPrint()
 
+finished = False
+
+while not finished:
+	direction = None
+	inp = raw_input()
+	if inp == 'A':
+		direction = LEFT
+	elif inp == 'D':
+		direction = RIGHT
+	elif inp == 'S':
+		direction = DOWN
+	elif inp == 'W':
+		direction = UP
+	elif inp == 'Q':
+		finished = True
+	
+	if direction:
+		finished = p1.movePlayer(direction)
+		p1.prettyPrint()
 
 
