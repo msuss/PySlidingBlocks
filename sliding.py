@@ -1,3 +1,5 @@
+import copy
+
 X = 9
 A = 4
 B = 2
@@ -8,20 +10,47 @@ RIGHT = (0, 1)
 UP = (-1, 0)
 DOWN = (1, 0)
 
-board1 = [[0 , 0, 0, 0, A ,0], \
+board0 = [[0 , 0, 0, 0, A ,0], \
 		  [X , 0, 0, 0, 0 ,0], \
 		  [P , B, 0, 0, 0 ,0], \
 		  [X , 0, 0, 0, X ,0], \
 		  [0 , 0, 0, 0, 0 ,0]]
 
-board2 = [[0 , 0, 0, X, 0 ,0], \
+board1 = [[0 , 0, 0, X, 0 ,0], \
 		  [X , 0, 0, X, B ,A], \
 		  [P , B, 0, 0, 0 ,0], \
 		  [X , 0, 0, 0, X ,X], \
 		  [0 , 0, 0, 0, 0 ,0]]
 
+board2 = [[0 , 0, 0, 0, 0 ,0], \
+		  [X , 0, A, 0, 0 ,X], \
+		  [P , B, 0, 0, 0 ,0], \
+		  [0 , 0, 0, 0, 0 ,X], \
+		  [0 , 0, X, 0, 0 ,0]]
 
-boards = [board1, board2]
+board3 = [[0 , 0, 0, 0, 0 ,0], \
+		  [X , 0, 0, 0, A ,0], \
+		  [P , 0, 0, 0, 0 ,0], \
+		  [0 , B, 0, 0, 0 ,B], \
+		  [X , X, X, 0, 0 ,0]]
+
+board4 = [[0 , 0, 0, 0, 0, X, 0, 0, 0, 0], \
+		  [0 , 0, A, 0, 0, 0, 0, X, 0, X], \
+		  [0 , 0, 0, X, 0, 0, 0, 0, 0, 0], \
+		  [P , 0, 0, 0, B, 0, 0, 0, X, 0], \
+		  [0 , 0, 0, 0, 0, 0, 0, 0, 0, 0], \
+		  [0 , 0, 0, 0, 0, 0, 0, 0, X, 0], \
+		  [0 , 0, 0, 0, X, 0, X, 0, 0, 0]]
+
+board5 = [[0 , 0, 0, 0, X, 0, 0, 0, 0, 0], \
+		  [0 , 0, 0, 0, 0, 0, 0, X, 0, X], \
+		  [0 , 0, 0, X, 0, 0, 0, 0, 0, 0], \
+		  [P , 0, 0, 0, B, 0, 0, 0, X, 0], \
+		  [0 , 0, 0, 0, 0, X, 0, 0, 0, 0], \
+		  [0 , 0, 0, 0, 0, 0, 0, 0, X, 0], \
+		  [X , 0, 0, 0, X, A, X, 0, 0, 0]]
+
+boards = [board0, board1, board2, board3, board4, board5]
 
 class Puzzle:
 
@@ -40,6 +69,13 @@ class Puzzle:
 				break
 		self.rows = len(board)
 		self.cols = len(board[0])
+
+		self.initBoard = copy.deepcopy(self.board)
+		self.initPlayerPos = self.playerPosition
+
+	def reset(self):
+		self.board = copy.deepcopy(self.initBoard)
+		self.playerPosition = self.initPlayerPos
 
 	def prettyPrint(self):
 		for line in self.board:
@@ -121,9 +157,10 @@ while not finished:
 		direction = UP
 	elif inp == 'q':
 		finished = True
+	elif inp == 'r':
+		puzzle.reset()
 	
 	if direction:
 		finished = puzzle.movePlayer(direction)
-		puzzle.prettyPrint()
-
+	puzzle.prettyPrint()
 
