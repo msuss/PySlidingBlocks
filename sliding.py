@@ -171,6 +171,7 @@ print
 # p1.movePlayer(UP)
 # p1.prettyPrint()
 
+print "Pick a board 0 - " + str(len(boards) - 1) + ":"
 boardNum = raw_input()
 
 board = boards[int(boardNum)]
