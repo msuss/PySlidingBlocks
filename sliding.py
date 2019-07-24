@@ -79,8 +79,20 @@ class Puzzle:
 
 	def prettyPrint(self):
 		for line in self.board:
-			print line
-		print 
+			lineString = ""
+			for cell in line:
+				if cell == X:
+					lineString += "X "
+				elif cell == B:
+					lineString += "B "
+				elif cell == A:
+					lineString += "A "
+				elif cell == P:
+					lineString += "P "
+				else:
+					lineString += ". "
+			print lineString
+		print
 
 	def outOfBounds(self, position):
 	 	if (position[0] < 0 or position[0] >= self.rows) or (position[1] < 0 or position[1] >= self.cols):
