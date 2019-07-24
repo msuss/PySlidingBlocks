@@ -52,6 +52,18 @@ board5 = [[0 , 0, 0, 0, X, 0, 0, 0, 0, 0], \
 
 boards = [board0, board1, board2, board3, board4, board5]
 
+def directionToString(direction):
+	if direction == LEFT:
+		return 'Left'
+	if direction == RIGHT:
+		return 'Right'
+	if direction == UP:
+		return 'Up'
+	if direction == DOWN:
+		return 'Down'
+
+
+
 class Puzzle:
 
 	def __init__(self, board):
@@ -72,14 +84,21 @@ class Puzzle:
 
 		self.initBoard = copy.deepcopy(self.board)
 		self.initPlayerPos = self.playerPosition
+		self.moveCount = 0
 
 	def reset(self):
 		self.board = copy.deepcopy(self.initBoard)
 		self.playerPosition = self.initPlayerPos
+		self.moveCount = 0
 
 	def prettyPrint(self):
+		borderString = "--"
+		for _ in range(self.cols):
+			borderString += "--"
+
+		print borderString
 		for line in self.board:
-			lineString = ""
+			lineString = "|"
 			for cell in line:
 				if cell == X:
 					lineString += "X "
@@ -91,8 +110,9 @@ class Puzzle:
 					lineString += "P "
 				else:
 					lineString += ". "
+			lineString += "|"
 			print lineString
-		print
+		print borderString
 
 	def outOfBounds(self, position):
 	 	if (position[0] < 0 or position[0] >= self.rows) or (position[1] < 0 or position[1] >= self.cols):
@@ -106,26 +126,30 @@ class Puzzle:
 	def moveObject(self, origPosition, direction, isPlayer = False):
 		currentCell = origPosition
 		adjCell = (currentCell[0] + direction[0], currentCell[1] + direction[1])
+		moved = False
 		while self.isOpen(adjCell):
 			currentCell = adjCell
 			if (self.board[currentCell[0]][currentCell[1]] == A and isPlayer):
 				print "You Win!"
 				self.board[currentCell[0]][currentCell[1]] = self.board[origPosition[0]][origPosition[1]]
 				self.board[origPosition[0]][origPosition[1]] = 0
-				return True
+				self.moveCount += 1
+				return (True, True)
 			adjCell = (currentCell[0] + direction[0], currentCell[1] + direction[1])
 		if not currentCell == origPosition:
 			self.board[currentCell[0]][currentCell[1]] = self.board[origPosition[0]][origPosition[1]]
 			self.board[origPosition[0]][origPosition[1]] = 0
+			moved = True
+			self.moveCount +=1
 		if (isPlayer):
 			self.playerPosition = currentCell
-		return False
+		return (False, moved)
 
 
 	def movePlayer(self, direction):
 		adjCell = (self.playerPosition[0] + direction[0], self.playerPosition[1] + direction[1])
 	 	if self.outOfBounds(adjCell):
-	 		return
+	 		return (False, False)
 	 	elif self.board[adjCell[0]][adjCell[1]] == B:
 	 	 	return self.moveObject(adjCell, direction)
 	 	else:
@@ -153,6 +177,7 @@ board = boards[int(boardNum)]
 
 puzzle = Puzzle(board)
 puzzle.prettyPrint()
+print
 
 finished = False
 
@@ -171,8 +196,17 @@ while not finished:
 		finished = True
 	elif inp == 'r':
 		puzzle.reset()
+		print "RESET"
 	
 	if direction:
-		finished = puzzle.movePlayer(direction)
+		finished, moved = puzzle.movePlayer(direction)
+		if moved:
+			print directionToString(direction)
+		else:
+			print "No move"
+
 	puzzle.prettyPrint()
+	print "Moves: " + str(puzzle.moveCount)
+
+	print
 
